@@ -40,7 +40,8 @@ ORDER BY page_id ASC;
 [Question: ](https://datalemur.com/questions/tesla-unfinished-parts) Tesla is investigating bottlenecks in their production, and they need your help to extract the relevant data. Write a query that determines which parts have begun the assembly process but are not yet finished.
 
 ```sql
-SELECT DISTINCT part FROM parts_assembly
+SELECT DISTINCT part 
+FROM parts_assembly
 WHERE finish_date IS NULL;
 ```
 ![image](https://user-images.githubusercontent.com/50200083/221440143-6f087f90-6f2e-4785-8d1d-a4a9aa4205cc.png)
