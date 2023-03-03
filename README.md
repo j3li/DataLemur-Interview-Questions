@@ -44,7 +44,21 @@ SELECT DISTINCT part
 FROM parts_assembly
 WHERE finish_date IS NULL;
 ```
-![image](https://user-images.githubusercontent.com/50200083/221440143-6f087f90-6f2e-4785-8d1d-a4a9aa4205cc.png)
+![image](https://user-images.githubusercontent.com/50200083/221440143-6f087f90-6f2e-4785-8d1d-a4a9aa4205cc.png)  
 
+## Level: Medium
+
+### ✏️ Uber | User's Third Transaction
+[Question: ](https://datalemur.com/questions/sql-third-transaction) Assume you are given the table below on Uber transactions made by users. Write a query to obtain the third transaction of every user. Output the user id, spend and transaction date.
+
+```sql
+with rows as (
+SELECT *, ROW_NUMBER() OVER(PARTITION BY user_id ORDER BY transaction_date) as number FROM transactions
+)
+SELECT user_id, spend, transaction_date
+FROM rows
+WHERE number = 3;
+```
+![image](https://user-images.githubusercontent.com/50200083/222848163-a100356a-a3f8-41c8-9de6-d8c19a0b2f88.png)
 
 
