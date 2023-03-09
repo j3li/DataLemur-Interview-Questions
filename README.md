@@ -78,4 +78,35 @@ GROUP BY age_bucket;
 ```
 ![image](https://user-images.githubusercontent.com/50200083/223914789-c71ca0b1-9d6b-425c-8a5a-b84017af6969.png)
 
+## Level: Hard
 
+### ✏️ Facebook | Active User Retention
+[Question: ](https://datalemur.com/questions/user-retention) Assume you have the table below containing information on Facebook user actions. Write a query to obtain the active user retention in July 2022. Output the month (in numerical format 1, 2, 3) and the number of monthly active users (MAUs).
+
+```sql
+with cte as (
+SELECT EXTRACT(MONTH FROM event_date) as month, user_id, event_type
+FROM user_actions
+),
+curr as (
+SELECT month, user_id
+FROM cte b
+WHERE month = 7 AND event_type IN ('sign-in', 'like', 'comment')
+),
+last as (
+SELECT a.month, a.user_id
+FROM cte a, curr c
+WHERE a.month = c.month-1 AND event_type IN ('sign-in', 'like', 'comment')
+),
+joined as(
+SELECT curr.month, curr.user_id
+FROM last
+JOIN
+curr
+ON last.user_id = curr.user_id
+)
+SELECT month, COUNT(DISTINCT user_id)
+FROM joined
+GROUP BY month;
+```
+![image](https://user-images.githubusercontent.com/50200083/223934685-56604407-38f7-4216-8cdb-48658b344a80.png)
