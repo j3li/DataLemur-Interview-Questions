@@ -61,4 +61,23 @@ WHERE number = 3;
 ```
 ![image](https://user-images.githubusercontent.com/50200083/222848163-a100356a-a3f8-41c8-9de6-d8c19a0b2f88.png)
 
+### ✏️ Snapchat | Sending vs. Opening Snaps
+[Question: ](https://datalemur.com/questions/time-spent-snaps) Assume you are given the tables below containing information on Snapchat users, their ages, and their time spent sending and opening snaps. Write a query to obtain a breakdown of the time spent sending vs. opening snaps (as a percentage of total time spent on these activities) for each age group.
+
+Output the age bucket and percentage of sending and opening snaps. Round the percentage to 2 decimal places.
+
+```sql
+with joined as (
+SELECT a.activity_type, a.time_spent, ab.age_bucket FROM activities a 
+JOIN age_breakdown ab
+ON a.user_id = ab.user_id)
+
+SELECT age_bucket, 
+       ROUND((SUM(time_spent) FILTER(WHERE activity_type = 'send'))/(SUM(time_spent) FILTER(WHERE activity_type IN ('send', 'open')))*100.0, 2) as send_perc,
+       ROUND((SUM(time_spent) FILTER(WHERE activity_type = 'open'))/(SUM(time_spent) FILTER(WHERE activity_type IN ('send', 'open')))*100.0, 2) as open_perc
+FROM joined
+GROUP BY age_bucket;
+```
+![image](https://user-images.githubusercontent.com/50200083/223914789-c71ca0b1-9d6b-425c-8a5a-b84017af6969.png)
+
 
