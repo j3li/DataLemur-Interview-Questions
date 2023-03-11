@@ -44,7 +44,11 @@ WHERE finish_date IS NULL;
 ```
 ![image](https://user-images.githubusercontent.com/50200083/221440143-6f087f90-6f2e-4785-8d1d-a4a9aa4205cc.png)  
 
+
+
 ## Level: Medium
+
+
 
 ### ✏️ Uber | User's Third Transaction
 [Question: ](https://datalemur.com/questions/sql-third-transaction) Assume you are given the table below on Uber transactions made by users. Write a query to obtain the third transaction of every user. Output the user id, spend and transaction date.
@@ -78,7 +82,31 @@ GROUP BY age_bucket;
 ```
 ![image](https://user-images.githubusercontent.com/50200083/223914789-c71ca0b1-9d6b-425c-8a5a-b84017af6969.png)
 
+### ✏️ Twitter | Tweets' Rolling Averages
+[Question: ](https://datalemur.com/questions/rolling-average-tweets) The table below contains information about tweets over a given period of time. Calculate the 3-day rolling average of tweets published by each user for each date that a tweet was posted. Output the user id, tweet date, and rolling averages rounded to 2 decimal places.
+
+**Important Assumptions:**
+- Rows in this table are consecutive and ordered by date.
+- Each row represents a different day
+- A day that does not correspond to a row in this table is not counted. The most recent day is the next row above the current row.
+
+```sql
+WITH counts AS (
+SELECT user_id, tweet_date, COUNT(*) as tweets_ct
+FROM tweets
+GROUP BY user_id, tweet_date
+ORDER BY user_id)
+
+SELECT user_id, tweet_date, ROUND(AVG(tweets_ct) 
+       OVER (PARTITION BY user_id ORDER BY tweet_date ROWS BETWEEN 2 preceding AND current row), 2) as rolling_avg_3days
+FROM counts;
+```
+![image](https://user-images.githubusercontent.com/50200083/224510146-536be118-0397-4cea-ba8d-5548a97e5ecf.png)
+
+
 ## Level: Hard
+
+
 
 ### ✏️ Facebook | Active User Retention
 [Question: ](https://datalemur.com/questions/user-retention) Assume you have the table below containing information on Facebook user actions. Write a query to obtain the active user retention in July 2022. Output the month (in numerical format 1, 2, 3) and the number of monthly active users (MAUs).
