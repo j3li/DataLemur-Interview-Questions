@@ -138,3 +138,28 @@ FROM joined
 GROUP BY month;
 ```
 ![image](https://user-images.githubusercontent.com/50200083/223934685-56604407-38f7-4216-8cdb-48658b344a80.png)
+
+### ✏️ Wayfair | Y-on-Y Growth Rate
+[Question: ](https://datalemur.com/questions/yoy-growth-rate) Assume you are given the table below containing information on user transactions for particular products. Write a query to obtain the year-on-year growth rate for the total spend of each product for each year.
+
+Output the year (in ascending order) partitioned by product id, current year's spend, previous year's spend and year-on-year growth rate (percentage rounded to 2 decimal places).
+
+```sql
+with yearly_spending AS (
+  SELECT EXTRACT(YEAR FROM transaction_date) as year, product_id, SUM(spend) as curr_year_spend
+  FROM user_transactions
+  GROUP BY EXTRACT(YEAR FROM transaction_date), product_id
+  ORDER BY product_id, year
+),
+combined AS (
+  SELECT *, 
+         LAG(curr_year_spend, 1) OVER (PARTITION BY product_id ORDER BY product_id) AS prev_year_spend
+  FROM yearly_spending
+)
+
+SELECT *, ROUND((curr_year_spend - prev_year_spend)/prev_year_spend*100, 2) AS yoy_rate
+FROM combined;
+
+```
+![image](https://user-images.githubusercontent.com/50200083/225814784-73c8b2b3-ff18-458a-8a6d-1859d526339d.png)
+
