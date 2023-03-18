@@ -3,7 +3,6 @@
 
 I will be sharing my answers to SQL problems.
 
-***
 
 ## Level: Easy
 
