@@ -102,6 +102,25 @@ FROM counts;
 ```
 ![image](https://user-images.githubusercontent.com/50200083/224510146-536be118-0397-4cea-ba8d-5548a97e5ecf.png)
 
+### ✏️ Amazon | Highest-Grossing Items
+[Question: ](https://datalemur.com/questions/sql-highest-grossing) Assume you are given the table containing information on Amazon customers and their spending on products in various categories.
+
+Identify the top two highest-grossing products within each category in 2022. Output the category, product, and total spend.
+
+```sql
+WITH total AS (
+  SELECT category, product, SUM(spend) as total_spend, RANK() OVER(PARTITION BY category ORDER BY SUM(spend) DESC)
+  FROM product_spend
+  WHERE EXTRACT(YEAR FROM transaction_date) = 2022
+  GROUP BY category, product
+)
+
+SELECT category, product, total_spend
+FROM total
+WHERE rank < 3;
+```
+![image](https://user-images.githubusercontent.com/50200083/226251728-cdeda1b6-113e-43d6-b4a1-db455746b346.png)
+
 
 ## Level: Hard
 
