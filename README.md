@@ -158,6 +158,28 @@ WHERE artist_rank <=5;
 ```
 ![image](https://user-images.githubusercontent.com/50200083/227109267-3731ec3e-280c-4aec-97dd-1eac35871fc7.png)
 
+### ✏️ TikTok | Signup Activation Rate
+[Question: ](https://datalemur.com/questions/signup-confirmation-rate) New TikTok users sign up with their emails. They confirmed their signup by replying to the text confirmation to activate their accounts. Users may receive multiple text messages for account confirmation until they have confirmed their new account.
+
+Write a query to find the activation rate of the users. Round the percentage to 2 decimal places.
+
+Definitions:
+- emails table contain the information of user signup details.
+- texts table contains the users' activation information.
+
+```sql
+WITH joined AS (
+SELECT emails.user_id, texts.signup_action as signup
+FROM emails
+LEFT JOIN texts
+ON emails.email_id = texts.email_id
+AND texts.signup_action = 'Confirmed'
+)
+
+SELECT ROUND(COUNT(*) FILTER(WHERE signup IS NOT NULL)*1.0/COUNT(*), 2) AS confirm_rate
+FROM joined;
+```
+![image](https://user-images.githubusercontent.com/50200083/227689437-decff6ba-4866-46f8-9a89-af9d1de7b20e.png)
 
 ## Level: Hard
 
