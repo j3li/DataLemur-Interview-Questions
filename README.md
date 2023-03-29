@@ -1,7 +1,7 @@
 # DataLemur Interview Questions
 [DataLemur](https://datalemur.com) is a data science platform with real interview questions from top companies, including FAANG companies.
 
-I will be sharing my answers to SQL problems.
+I will be sharing my answers and results to easy, medium, and hard SQL problems.
 
 
 ## Level: Easy
