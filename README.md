@@ -181,6 +181,25 @@ FROM joined;
 ```
 ![image](https://user-images.githubusercontent.com/50200083/227689437-decff6ba-4866-46f8-9a89-af9d1de7b20e.png)
 
+### ✏️ Microsoft | Supercloud Customer
+[Question :](https://datalemur.com/questions/supercloud-customer) A Microsoft Azure Supercloud customer is a company which buys at least 1 product from each product category.
+
+Write a query to report the company ID which is a Supercloud customer.
+
+```sql
+WITH customer_categories AS (
+    SELECT customer_id, COUNT(DISTINCT product_category) AS num_categories
+    FROM customer_contracts
+    INNER JOIN products ON customer_contracts.product_id = products.product_id
+    GROUP BY customer_id
+) 
+
+SELECT customer_id
+FROM customer_categories
+WHERE num_categories = (SELECT COUNT(DISTINCT product_category) FROM products);
+```
+![image](https://user-images.githubusercontent.com/50200083/229269233-3a7d26e7-680c-4766-88ed-8a518544e17e.png)
+
 ## Level: Hard
 
 
